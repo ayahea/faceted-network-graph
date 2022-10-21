@@ -1,6 +1,7 @@
-/*
+/* 
 This demo visualises wine and cheese pairings.
 */
+var testing = null;
 
 $(function(){
 
@@ -10,20 +11,33 @@ $(function(){
 
   var cy;
 
+
+
   // get exported json from cytoscape desktop via ajax
   var graphP = $.ajax({
-    url: 'https://cdn.rawgit.com/maxkfranz/3d4d3c8eb808bd95bae7/raw', // wine-and-cheese.json
-    // url: './data.json',
+   // url: 'https://cdn.rawgit.com/maxkfranz/3d4d3c8eb808bd95bae7/raw', // wine-and-cheese.json
+     url: 'data/aishah_53.json',
     type: 'GET',
     dataType: 'json'
   });
 
+/*  ayah testingvar */ variousgraph = $.ajax({ //ayah testing
+    // url: 'https://cdn.rawgit.com/maxkfranz/3d4d3c8eb808bd95bae7/raw', // wine-and-cheese.json
+      url: 'data/various.json',
+     type: 'GET',
+     dataType: 'json'
+   });
+ 
   // also get style via ajax
   var styleP = $.ajax({
     url: './style.cycss', // wine-and-cheese-style.cycss
     type: 'GET',
     dataType: 'text'
   });
+
+ 
+// const testing = graphP['responseJSON'];
+ console.log(graphP['responseJSON']);
 
   var infoTemplate = Handlebars.compile([
     '<p class="ac-name">{{name}}</p>',
@@ -34,7 +48,10 @@ $(function(){
   ].join(''));
 
   // when both graph export json and style loaded, init cy
+  //Promise.all([ graphP, styleP ]).then(initCy);
   Promise.all([ graphP, styleP ]).then(initCy);
+
+
 
   var allNodes = null;
   var allEles = null;
@@ -224,9 +241,25 @@ $(function(){
 
   function initCy( then ){
     var loading = document.getElementById('loading');
-    var expJson = then[0];
-    var styleJson = then[1];
-    var elements = expJson.elements;
+    console.log("initcy - then[0]");
+    console.log(then[0]);
+   // console.log("initcy - graphP");
+    // console.log(graphP);
+    console.log(graphP['responseJSON']); // this works and it looks like then[0]. but the testing variable if defined above  doesn't
+    if ( testing == null ) {
+    testing = variousgraph['responseJSON']; } //this allows testing to have the graph in the dropdown function
+    console.log("testing");
+    console.log(testing);
+    /*    console.log("initcy - variousgraph");
+    console.log(variousgraph);
+    console.log("initcy - currentgraph");
+    console.log(currentgraph);
+    console.log("initcy - currentgraphelements");
+    console.log(currentgraphelements); // undefined? why?*/
+   var expJson = then[0];
+   var styleJson = then[1];
+   var elements = expJson.elements;
+
 
     elements.nodes.forEach(function(n){
       var data = n.data;
@@ -244,6 +277,7 @@ $(function(){
         y: n.position.y
       };
     });
+
 
     loading.classList.add('loaded');
 
@@ -309,7 +343,8 @@ $(function(){
         return str.match( q );
       }
 
-      var fields = ['name', 'NodeType', 'Country', 'Type', 'Milk'];
+      //var fields = ['name', 'NodeType', 'Country', 'Type', 'Milk'];
+      var fields = ['fullname', 'displayname', 'searchname']; //aea
 
       function anyFieldMatches( n ){
         for( var i = 0; i < fields.length; i++ ){
@@ -388,8 +423,8 @@ $(function(){
   });
 
   $('#filters').on('click', 'input', function(){
-
-    var soft = $('#soft').is(':checked');
+    console.log('filters on click');
+  /* ayah commented var soft = $('#soft').is(':checked');
     var semiSoft = $('#semi-soft').is(':checked');
     var na = $('#na').is(':checked');
     var semiHard = $('#semi-hard').is(':checked');
@@ -408,18 +443,34 @@ $(function(){
     var euro = $('#chs-euro').is(':checked');
     var newWorld = $('#chs-nworld').is(':checked');
     var naCountry = $('#chs-na').is(':checked');
-
+*/
+    var male = $('#male').is(':checked');
+    var female = $('#female').is(':checked');
+    
     cy.batch(function(){
 
       allNodes.forEach(function( n ){
-        var type = n.data('NodeType');
 
+//        var type = n.data('NodeType'); ayah
+
+        
+        //ayah:
+        var gender = n.data('gender');
+
+        // not ayah:
         n.removeClass('filtered');
 
         var filter = function(){
           n.addClass('filtered');
         };
 
+        // ayah:
+        if( gender === 'male' ){
+          if( !male ){ filter(); }
+        } else if( gender === 'female'){
+          if( !female ){ filter(); }
+        }
+/*
         if( type === 'Cheese' || type === 'CheeseType' ){
 
           var cType = n.data('Type');
@@ -460,7 +511,8 @@ $(function(){
           if( !cider ){ filter(); }
 
         }
-
+*/
+// not ayah:
       });
 
     });
@@ -494,6 +546,93 @@ $(function(){
     },
 
     content: $('#filters')
+  });
+
+  // ayah
+  $('#dropdown-content').on('click', 'input', function() {
+    console.log('graph dropdown on click');
+    console.log('graphP');
+    console.log(graphP); //graphP['responseJSON'] is undefined here
+    console.log("testing");
+    console.log(testing); // this works - definine var testing outside then defining/assigning it in initcy.
+  /*  console.log('graphP');
+    console.log(graphP); this is not the graph object it was originally defined as. */
+    var various = $('#various').is(':selected');
+    var aishah = $('#aishah').is(':selected');
+    //var hafsah = $('#hafsah').is(':selected');
+   // var dataurl = 'data/aishah_53.json';
+    if( various ){ // ok this is if statement is not working
+      console.log("if various = true");
+      initCy([ testing, styleP ]);
+     // Promise.all([ testing, styleP ]).then(initCy);
+    }
+    console.log("about to initCY in dropdown function");
+    initCy([ testing, styleP ]);
+     // dataurl = 'data/various.json';
+     // currentgraph = variousgraph; // variousgraph and graphP 
+    /*}else if( aishah ){
+      dataurl = 'data/aishah_53.json';
+      //currentgraph = graphP;
+    }*/
+    
+ /*   var graphP1 = $.ajax({
+      url: 'data/various.json', //dataurl
+     type: 'GET',
+     dataType: 'json'
+   });
+   
+   console.log("graphP in dropdown function:");
+   console.log(graphP); // this is not the graph object for some reason. 
+
+   console.log("currentgraph in dropdown function");
+   console.log(currentgraph); // this changes from the initial object it was above. by the time it reaches this line it's no longer the json graph object
+   console.log("currentgraphelements in dropdown function");
+   console.log(currentgraphelements);*/
+
+   /* I just put this here to see if this needs to be here for promise.all to work as it does above. 
+   infoTemplate = Handlebars.compile([
+    '<p class="ac-name">{{name}}</p>',
+    '<p class="ac-node-type"><i class="fa fa-info-circle"></i> {{NodeTypeFormatted}} {{#if Type}}({{Type}}){{/if}}</p>',
+    '{{#if Milk}}<p class="ac-milk"><i class="fa fa-angle-double-right"></i> {{Milk}}</p>{{/if}}',
+    '{{#if Country}}<p class="ac-country"><i class="fa fa-map-marker"></i> {{Country}}</p>{{/if}}',
+    '<p class="ac-more"><i class="fa fa-external-link"></i> <a target="_blank" href="https://duckduckgo.com/?q={{name}}">More information</a></p>'
+  ].join(''));*/
+  // initCy([ graphP1, styleP ]);
+   //Promise.all([ graphP, styleP ]).then( initCy );
+   // problem is that Problem.all call at the top correctly passes the json object into initcy.
+   // here, something else gets passed.
+   // then try: Promise.resolve().then( reset )
+   // also try RETURNING the promise?
+   
+  });
+  // ayah
+  $('#graph-dropdown').qtip({
+    position: {
+      my: 'top center',
+      at: 'bottom center',
+      adjust: {
+        method: 'shift'
+      },
+      viewport: true
+    },
+
+    show: {
+      event: 'click'
+    },
+
+    hide: {
+      event: 'unfocus'
+    },
+
+    style: {
+      classes: 'qtip-bootstrap qtip-filters',
+      tip: {
+        width: 16,
+        height: 8
+      }
+    },
+
+    content: $('#dropdown-content')
   });
 
   $('#about').qtip({

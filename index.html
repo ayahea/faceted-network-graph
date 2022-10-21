@@ -4,7 +4,7 @@
 <meta charset=utf-8 />
 <meta name="viewport" content="width=device-width, user-scalable=no" />
 
-<title>Wine and cheese</title>
+<title>Muhaddithat</title>
   <link href="font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="bootstrap-3.3.7-dist/css/bootstrap.min.css">
   <link href="style.css" rel="stylesheet">
@@ -46,6 +46,8 @@
 
   <button id="about" class="btn btn-default"><i class="fa fa-info"></i></button>
 
+  <button id="graph-dropdown" class="btn btn-default"><i class="fa fa-filter"></i></button>
+
   <div id="about-content">
     <p>This app was made using <a target="_blank" href="http://js.cytoscape.org">Cytoscape.js <i class="fa fa-external-link"></i></a>.</p>
 
@@ -53,7 +55,8 @@
   </div>
 
   <div id="filters">
-    <div class="filterset-section-title">Cheese</div>
+
+<!-- aea   <div class="filterset-section-title">Cheese</div>
 
     <div class="filtersets">
       <div class="filterset">
@@ -77,18 +80,52 @@
         <input id="chs-na" type="checkbox" checked></input><label for="chs-na">Other</label><br />
       </div>
     </div>
-
-    <div class="filterset-section-title">Drink</div>
+    -->
+    <div class="filterset-section-title">Gender</div>
 
     <div class="filtersets">
       <div class="filterset">
-        <!-- <div class="filterset-title">Type</div> -->
-        <input id="white" type="checkbox" checked></input><label for="white">White wine</label><br />
+      <!--  <input id="white" type="checkbox" checked></input><label for="white">White wine</label><br />
         <input id="red" type="checkbox" checked></input><label for="red">Red wine</label><br />
-        <input id="cider" type="checkbox" checked></input><label for="cider">Cider</label>
+        <input id="cider" type="checkbox" checked></input><label for="cider">Cider</label> -->
+        <input id="male" type="checkbox" checked></input><label for="male">Male</label><br />
+        <input id="female" type="checkbox" checked></input><label for="female">Female</label> 
       </div>
     </div>
 
+  </div>
+
+  <div id="dropdown-content">
+  <div class='dropdown-title'>Choose a graph to view</div>
+  <div class='dropdown'>
+    <form>
+      <input type="radio" id="aishah" name="selected_graph" value="aishah_53"><label for="aishah">aishah</label><br>
+      <input type="radio" id="various" name="selected_graph" value="various"><label for="various">various</label><br>
+    </form>
+<!--       <select id="sample" class="dropbtn" >
+      <div id="myDropdown" class="dropdown-content">
+      <option id="various">Various Narrators</option>
+      <option id="aishah" selected>ʿAʾishah bint Abi Bakr</option>
+      <option id="hafsah">Ḥafṣah bint ʿUmar</option>
+      <option id="sample4">Um Salamah</option>
+      <option id="sample4">Ramlah bint Abi Sufyān</option>
+      <option id="sample5">Asmāʾ bint ʿUmays</option>
+    </div>         
+    </select>
+    -->
+   <!-- <select id="sample" class="dropbtn" style="width:auto;" onchange="location = this.value;">
+        <div id="myDropdown" class="dropdown-content">
+        <option value="index.html" selected="">Various Narrators</option>
+        <option value="aishah53.html">ʿAʾishah bint Abi Bakr</option>
+        <option value="sample3">Ḥafṣah bint ʿUmar</option>
+        <option value="sample4">Um Salamah</option>
+        <option value="sample4">Ramlah bint Abi Sufyān</option>
+        <option value="sample5">Asmāʾ bint ʿUmays</option>
+      </div>         
+      </select> 
+
+-->
+    </div> 
   </div>
 
   <script>
